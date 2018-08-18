@@ -1,4 +1,4 @@
-(ns axiom)
+(ns petardo.lindenmayer.axiom)
 
 (comment
   "Turtle graphics"
