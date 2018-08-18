@@ -4,3 +4,7 @@
 
 (deftest basic
   (is (= (:canvas (forward-generation {})) '())))
+
+(deftest turning
+  (is (= 270
+        (turn {:angle 360} -90))))

@@ -49,19 +49,47 @@ Gen. 3:
    :purple
    :red])
 
+(defn turn
+  [state direction]
+  (mod (+ (:angle state) direction) 360))
+
+(def default-actions
+  {\( #(assoc % :saved-state %)
+   \) #(do nil)
+   \[ #(assoc %
+         :saved-state %
+         (turn % -90))
+   \] #(assoc %
+         :saved-state %
+         (turn % 90))
+   \< #(turn % -90)
+   \> #(turn % 90)
+   \! #(assoc %
+         :pen-down? (not (:pen-down? %)))
+   \+ #(assoc %
+         :pen-down? true)
+   \- #(assoc %
+         :pen-down? false)
+   \/ #(assoc %
+         :color (change-color (:color %) 1))
+   \\ #(assoc %
+         :color (change-color (:color %) -1))})
+
 (defn change-color
   "Changes color. Use negative numbers for backwards."
   [current-color direction]
   (get colors (mod (+ (.indexOf colors :orange) direction) (count colors))))
 
 (defn forward-generation
-  [{:keys [x y pen color rules axiom generation]
+  [{:keys [x y angle pen-down? color rules actions axiom generation]
     :or   {generation 0
            canvas     '()}
     :as   state}]
   (assoc state
     :generation (inc generation)
-    :axiom (apply str (map (fn [x] (get rules x x)) axiom))))
+    :axiom (apply str (map (fn [x] (get rules x x)) axiom))
+    :canvas (concat canvas
+              ())))
 
 (defn forward-n-generations
   ([n state]
@@ -69,13 +97,14 @@ Gen. 3:
      (take (inc n))
      (drop n))))
 
-(forward-n-generations 3 {:x     0
-                          :y     0
-                          :pen   :up
-                          :color (first colors)
-                          :axiom "////+a^"
-                          :rules {\a "^b[^a]^a"
-                                  \b "bb"}})
+(forward-n-generations 3 {:x       0
+                          :y       0
+                          :pen     :up
+                          :color   (first colors)
+                          :axiom   "////+a^"
+                          :rules   {\a "^b[^a]^a"
+                                    \b "bb"}
+                          :actions default-actions})
 
 (forward-generation {:x     0
                      :y     0
@@ -85,6 +114,6 @@ Gen. 3:
                      :rules {\a "^b[^a]^a"
                              \b "bb"}})
 (forward-generation
-  {:x 0, :y 0, :pen :up, :color :yellow, :axiom "////+^b[^a]^a^", :rules {\a "^b[^a]^a", \b "bb"}, :generation 1})
+{:x 0, :y 0, :pen :up, :color :yellow, :axiom "////+^b[^a]^a^", :rules {\a "^b[^a]^a", \b "bb"}, :generation 1})
 
 [{:x 0, :y 0, :pen :up, :color :yellow, :axiom "////+^bb[^^b[^a]^a]^^b[^a]^a^", :rules {\a "^b[^a]^a", \b "bb"}, :generation 2}]
