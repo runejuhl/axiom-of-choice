@@ -80,13 +80,13 @@ Gen. 3:
 
 (def default-actions
   (merge
-    {\( #(assoc % :saved-state %)
+    {\( #(assoc % :saved-state (dissoc % :saved-state))
      \) #(:saved-state %)
      \[ #(assoc %
-           :saved-state %
+           :saved-state (dissoc % :saved-state)
            :angle (turn % -90))
      \] #(assoc %
-           :saved-state %
+           :saved-state (dissoc % :saved-state)
            :angle (turn % 90))
      \< #(assoc
            :angle (turn % -90))
