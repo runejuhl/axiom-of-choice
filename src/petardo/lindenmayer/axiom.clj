@@ -150,28 +150,19 @@ Gen. 3:
         axiom))
     image))
 
-(->> {:axiom   "////+a^"
-      :rules   {\a "^B[^A]^A"
-                \b "BB"
-                \A "^B[^A]^A"
-                \B "BB"}
-      :x       400
-      :y       300
-      :actions default-actions}
-  (forward-n-generations 3)
-  ;; :axiom
-  (render-state)
-  (im/show)
+(comment
+  "SVG: https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths"
+
+  (->> {:axiom   "////+a^"
+        :rules   {\a "^B[^A]^A"
+                  \b "BB"
+                  \A "^B[^A]^A"
+                  \B "BB"}
+        :x       400
+        :y       300
+        :actions default-actions}
+    (forward-n-generations 3)
+    ;; :axiom
+    (render-state)
+    (#(im/show % :zoom 4.0)))
   )
-
-(forward-generation {:x     0
-                     :y     0
-                     :pen   :up
-                     :color (first colors)
-                     :axiom "////+a^"
-                     :rules {\a "^b[^a]^a"
-                             \b "bb"}})
-(forward-generation
-{:x 0, :y 0, :pen :up, :color :yellow, :axiom "////+^b[^a]^a^", :rules {\a "^b[^a]^a", \b "bb"}, :generation 1})
-
-[{:x 0, :y 0, :pen :up, :color :yellow, :axiom "////+^bb[^^b[^a]^a]^^b[^a]^a^", :rules {\a "^b[^a]^a", \b "bb"}, :generation 2}]
