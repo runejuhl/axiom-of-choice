@@ -70,56 +70,56 @@ Gen. 3:
 (defn move-forward
   [{:keys [x y angle] :as state}]
   (t/spy :info
-    (merge
-      state
-      (case angle
-        0   {:y (dec y)}
-        90  {:x (inc x)}
-        180 {:y (inc y)}
-        270 {:x (dec x)}))))
+         (merge
+          state
+          (case angle
+            0   {:y (dec y)}
+            90  {:x (inc x)}
+            180 {:y (inc y)}
+            270 {:x (dec x)}))))
 
 (def default-actions
   (merge
-    {\( #(assoc % :saved-state (dissoc % :saved-state))
-     \) #(:saved-state %)
-     \[ #(assoc %
-           :saved-state (dissoc % :saved-state)
-           :angle (turn % -90))
-     \] #(assoc %
-           :saved-state (dissoc % :saved-state)
-           :angle (turn % 90))
-     \< #(assoc %
-           :angle (turn % -90))
-     \> #(assoc %
-           :angle (turn % 90))
-     \! #(assoc %
-           :pen-down? (not (:pen-down? %)))
-     \+ #(assoc %
-           :pen-down? true)
-     \- #(assoc %
-           :pen-down? false)
-     \/ #(assoc %
-           :color (change-color (:color %) 1))
-     \\ #(assoc %
-           :color (change-color (:color %) -1))
-     \^ move-forward}
-    (zipmap (map char (range (int \A) (int \Z))) (repeat move-forward))))
+   {\( #(assoc % :saved-state (dissoc % :saved-state))
+    \) #(:saved-state %)
+    \[ #(assoc %
+               :saved-state (dissoc % :saved-state)
+               :angle (turn % -90))
+    \] #(assoc %
+               :saved-state (dissoc % :saved-state)
+               :angle (turn % 90))
+    \< #(assoc %
+               :angle (turn % -90))
+    \> #(assoc %
+               :angle (turn % 90))
+    \! #(assoc %
+               :pen-down? (not (:pen-down? %)))
+    \+ #(assoc %
+               :pen-down? true)
+    \- #(assoc %
+               :pen-down? false)
+    \/ #(assoc %
+               :color (change-color (:color %) 1))
+    \\ #(assoc %
+               :color (change-color (:color %) -1))
+    \^ move-forward}
+   (zipmap (map char (range (int \A) (int \Z))) (repeat move-forward))))
 
 (defn forward-generation
   [{:keys [rules actions axiom generation]
     :or   {generation 0}
     :as   state}]
   (assoc state
-    :generation (inc generation)
-    :axiom (clojure.string/join
-             (map (fn [x] (get rules x x)) axiom))))
+         :generation (inc generation)
+         :axiom (clojure.string/join
+                 (map (fn [x] (get rules x x)) axiom))))
 
 (defn forward-n-generations
   ([n state]
    (->> (iterate forward-generation state)
-     (take (inc n))
-     (drop n)
-     (first))))
+        (take (inc n))
+        (drop n)
+        (first))))
 
 (defn keyword->color
   [c]
@@ -132,22 +132,22 @@ Gen. 3:
         image           (im/new-image width height)
         ^doubles pixels (im/get-pixels image)]
     (dorun
-      (reduce
-        (fn [{:keys [x y angle color pen-down?] :or {x (/ width 2) y (/ height 2)} :as state} action]
-          (if pen-down?
-            (if-let [brush (keyword->color color)]
-              (im/set-pixel image x y brush)
-              (throw
-                (ex-info "no such color" {:color color}))))
-          (if-let [rule (get actions action)]
-            (rule state)
-            state))
-        {:angle     180
-         :pen-down? false
-         :color     (first colors)
-         :x         x
-         :y         y}
-        axiom))
+     (reduce
+      (fn [{:keys [x y angle color pen-down?] :or {x (/ width 2) y (/ height 2)} :as state} action]
+        (if pen-down?
+          (if-let [brush (keyword->color color)]
+            (im/set-pixel image x y brush)
+            (throw
+             (ex-info "no such color" {:color color}))))
+        (if-let [rule (get actions action)]
+          (rule state)
+          state))
+      {:angle     180
+       :pen-down? false
+       :color     (first colors)
+       :x         x
+       :y         y}
+      axiom))
     image))
 
 (comment
@@ -161,8 +161,7 @@ Gen. 3:
         :x       400
         :y       300
         :actions default-actions}
-    (forward-n-generations 3)
+       (forward-n-generations 3)
     ;; :axiom
-    (render-state)
-    (#(im/show % :zoom 4.0)))
-  )
+       (render-state)
+       (#(im/show % :zoom 4.0))))
