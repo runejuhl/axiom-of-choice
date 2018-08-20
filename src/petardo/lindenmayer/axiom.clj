@@ -141,12 +141,13 @@ Gen. 3:
                 (ex-info "no such color" {:color color}))))
           (if-let [rule (get actions action)]
             (do
-              (t/info "action" action)
               (t/spy :info (rule state)))
             state))
         {:angle     180
          :pen-down? false
-         :color     (first colors)}
+         :color     (first colors)
+         :x         x
+         :y         y}
         axiom))
     image))
 
