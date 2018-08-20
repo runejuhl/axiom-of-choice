@@ -88,9 +88,9 @@ Gen. 3:
      \] #(assoc %
            :saved-state (dissoc % :saved-state)
            :angle (turn % 90))
-     \< #(assoc
+     \< #(assoc %
            :angle (turn % -90))
-     \> #(assoc
+     \> #(assoc %
            :angle (turn % 90))
      \! #(assoc %
            :pen-down? (not (:pen-down? %)))
