@@ -131,7 +131,7 @@ Gen. 3:
         height          600
         image           (im/new-image width height)
         ^doubles pixels (im/get-pixels image)]
-    (doall
+    (dorun
       (reduce
         (fn [{:keys [x y angle color pen-down?] :or {x (/ width 2) y (/ height 2)} :as state} action]
           (if pen-down?
@@ -140,8 +140,7 @@ Gen. 3:
               (throw
                 (ex-info "no such color" {:color color}))))
           (if-let [rule (get actions action)]
-            (do
-              (t/spy :info (rule state)))
+            (rule state)
             state))
         {:angle     180
          :pen-down? false
