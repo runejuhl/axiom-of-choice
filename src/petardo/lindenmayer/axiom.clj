@@ -150,6 +150,25 @@ Gen. 3:
       axiom))
     image))
 
+(defn -main
+  [& args]
+  (comment
+    ;; Doesn't seem to work, see https://askubuntu.com/a/723503
+    (-> (System/getProperties)
+        (.setProperty "javax.accessibility.assistive_technologies" "")))
+  (->> {:axiom   "////+a^"
+        :rules   {\a "^B[^A]^A"
+                  \b "BB"
+                  \A "^B[^A]^A"
+                  \B "BB"}
+        :x       400
+        :y       300
+        :actions default-actions}
+       (forward-n-generations 5)
+       ;; :axiom
+       (render-state)
+       (#(im/show % :zoom 4.0))))
+
 (comment
   "SVG: https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths"
 
