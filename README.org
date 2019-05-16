@@ -1,0 +1,11 @@
+* Axiom of Choice
+
+Inspired by a BornHack 2018 CTF Challenge, Programming 200 "Axiom of Choice".
+
+** Run it
+
+#+BEGIN_SRC sh
+  lein run
+#+END_SRC
+
+[[file:axiom.png]]
